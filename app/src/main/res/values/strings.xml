@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MQTT</string>
+    <string name="tab_text_1">Broker</string>
+    <string name="tab_text_2">Client</string>
+
+    <string name="broker_on">Broker enabled.\n\nHost: %1$s</string>
+    <string name="broker_off">Broker disabled.</string>
+</resources>
