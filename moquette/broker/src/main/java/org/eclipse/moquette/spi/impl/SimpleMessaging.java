@@ -101,9 +101,7 @@ public class SimpleMessaging implements IMessaging, EventHandler<ValueEvent> {
         ///Log.d("Moquette", "disruptorPublish publishing event " + msgEvent);
         long sequence = m_ringBuffer.next();
         ValueEvent event = m_ringBuffer.get(sequence);
-
         event.setEvent(msgEvent);
-        
         m_ringBuffer.publish(sequence); 
     }
     

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 26
@@ -35,11 +36,28 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:cardview-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:support-v4:26.1.0'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation('com.mikepenz:fastadapter:2.5.3@aar') {
+        transitive = true
+    }
+    //used to generate the drawer on the left
+    //https://github.com/mikepenz/MaterialDrawer
+    implementation('com.mikepenz:materialdrawer:5.9.0@aar') {
+        transitive = true
+        exclude module: "fastadapter"
+    }
+
+    implementation 'com.mikepenz:itemanimators:0.5.0@aar'
+    implementation 'com.mikepenz:fastadapter-commons:2.5.3@aar'
+    implementation 'com.mikepenz:fastadapter-extensions:2.5.2@aar'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     compile project( ':broker')
     compile project(':netty_parser')

@@ -42,32 +42,6 @@ public class BrokerService extends Service {
             Log.v("launch broker", "io exception");
         }
 
-        /*
-        Server server = new Server();
-        try {
-            MemoryConfig memoryConfig = new MemoryConfig(new Properties());
-            memoryConfig.setProperty(BrokerConstants.PERSISTENT_STORE_PROPERTY_NAME,
-                    Environment.getExternalStorageDirectory().getAbsolutePath() +
-                            File.separator + BrokerConstants.DEFAULT_MOQUETTE_STORE_MAP_DB_FILENAME);
-
-            server.startServer(memoryConfig);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            MemoryConfig memoryConfig = new MemoryConfig(new Properties());
-            memoryConfig.setProperty(BrokerConstants.PERSISTENT_STORE_PROPERTY_NAME,
-                    Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator + BrokerConstants.DEFAULT_MOQUETTE_STORE_MAP_DB_FILENAME);
-            server.startServer(memoryConfig);
-
-            // server.startServer();//is not working due to DEFAULT_MOQUETTE_STORE_MAP_DB_FILENAME;
-            Log.d("broker","Server Started");
-        }
-        catch (IOException e) { e.printStackTrace(); }
-        catch (Exception e){ e.printStackTrace(); }
-        */
-
         return START_STICKY;
     }
 }

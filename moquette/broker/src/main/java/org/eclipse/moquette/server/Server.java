@@ -30,10 +30,7 @@ import java.util.Properties;
  * @author andrea
  */
 public class Server {
-
-    
     public static final String STORAGE_FILE_PATH = Environment.getExternalStorageDirectory() + File.separator + "moquette_store.mapdb";
-
     private ServerAcceptor m_acceptor;
     SimpleMessaging messaging;
     

@@ -1,11 +1,24 @@
 package me.hatice.mqtt;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IAdapter;
+import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
+import com.mikepenz.itemanimators.AlphaInAnimator;
+
+import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 
 
 /**
@@ -22,7 +35,11 @@ public class ClientFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private RecyclerView mContainer;
+    //save our Realm instance to close it later
+    private Realm mRealm;
 
+    private FastItemAdapter<Device> mFastItemAdapter;
 
     public ClientFragment() {
         // Required empty public constructor
@@ -59,7 +76,63 @@ public class ClientFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_client, container, false);
+        View root =  inflater.inflate(R.layout.fragment_client, container, false);
+
+        mContainer = root.findViewById(R.id.device_container);
+        //create our FastAdapter which will manage everything
+        mFastItemAdapter = new FastItemAdapter<>();
+
+        //configure our fastAdapter
+        mFastItemAdapter.withOnClickListener(new FastAdapter.OnClickListener<Device>() {
+            @Override
+            public boolean onClick(View v, IAdapter<Device> adapter, Device item, int position) {
+                ///Navigator.DevStatusWithAutoCompat.start( (Activity)v.getContext(), item.getUSER_MAC() );
+                return false;
+            }
+        });
+
+        //get our recyclerView and do basic setup
+        mContainer.setLayoutManager(new LinearLayoutManager(getContext()));
+        mContainer.setItemAnimator(new AlphaInAnimator());
+        mContainer.setAdapter(mFastItemAdapter);
+        //Get a realm instance for this activity
+        mRealm = Realm.getDefaultInstance();
+
+        //set the back arrow in the toolbar
+        ///getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ///getSupportActionBar().setHomeButtonEnabled(false);
+
+        //restore selections (this has to be done after the items were added
+        mFastItemAdapter.withSavedInstanceState(savedInstanceState);
+
+        return root;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //Add a realm on change listener (don´t forget to close this realm instance before adding this listener again)
+        mRealm.where(Device.class).findAllAsync().addChangeListener(new RealmChangeListener<RealmResults<Device>>() {
+            @Override
+            public void onChange(RealmResults<Device> userItems) {
+                mFastItemAdapter.setNewList(userItems);
+                //iconNoData.setVisibility(userItems.size() > 0 ? View.GONE : View.VISIBLE);
+            }
+        });
+    }
+
+    //Prevent the realm instance from leaking
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        closeRealm();
+    }
+
+
+    private void closeRealm() {
+        mRealm.close();
+    }
+
 
 }
